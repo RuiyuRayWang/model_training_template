@@ -1,0 +1,38 @@
+name: "mnist_cnn_template"
+tmp_dir: "tmp"
+
+preprocess:
+  script: "scripts/preprocess_mnist.py"
+  raw_dir: "data/mnist"
+  out_dir: "datasets/mnist"
+  val_size: 5000
+  seed: 42
+
+dataset:
+  name: "MNIST"
+  train_file: "datasets/mnist/train.pt"
+  val_file: "datasets/mnist/val.pt"
+  test_file: "datasets/mnist/test.pt"
+  num_classes: 10
+  image_shape: [1, 28, 28]
+
+train:
+  model: "MnistCNN"
+  model_kwargs:
+    num_classes: 10
+    hidden_dim: 128
+    dropout: 0.25
+  criterion: "CrossEntropyLoss"
+  optimizer: "AdamW"
+  lr_init: 1e-3
+  weight_decay: 1e-4
+  batch_size: 64
+  epochs: 20
+  num_workers: 4
+  device: "auto"
+  save_every_n_epochs: 5
+  checkpoint_dir: "checkpoints/mnist_cnn"
+  resume_from_checkpoint: false
+  checkpoint:
+    path:
+    resume_from_epoch: 0
